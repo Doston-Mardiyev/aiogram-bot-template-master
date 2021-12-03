@@ -100,7 +100,7 @@ class Database:
         sql = """
         CREATE TABLE IF NOT EXISTS Products (
         id SERIAL PRIMARY KEY,
-        
+        menu_language VARCHAR(50) NOT NULL,
         -- Mahsulot kategoriyasi
         category_name VARCHAR(50) NOT NULL,
 
@@ -115,14 +115,16 @@ class Database:
 
     async def add_product(
         self,
+        menu_language,
         category_name,
         service_name,
         photo=None,
         description="",
     ):
-        sql = "INSERT INTO Products ( category_name, service_name, photo,  description) VALUES($1, $2, $3, $4) returning *"
+        sql = "INSERT INTO Products (menu_language, category_name, service_name, photo,  description) VALUES($1, $2, $3, $4, $5) returning *"
         return await self.execute(
             sql,
+            menu_language,
             category_name,
             service_name,
             photo,
@@ -130,9 +132,9 @@ class Database:
             fetchrow=True,
         )
 
-    # async def get_categories(self):
-    #     sql = "SELECT DISTINCT category_name, category_code FROM Products"
-    #     return await self.execute(sql, fetch=True)
+    async def get_categories(self, menu_language, category_name, service_name):
+        sql = f"SELECT DISTINCT * FROM Products where menu_language='{menu_language}' AND category_name='{category_name}' AND service_name='{service_name}'"
+        return await self.execute(sql, fetch=True)
 
     
     # async def count_products(self, category_code, subcategory_code=None):

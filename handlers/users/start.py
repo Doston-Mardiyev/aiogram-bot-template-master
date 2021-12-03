@@ -30,16 +30,18 @@ async def bot_start(message: types.Message):
 
     await message.answer(f"Assalom alekum, {message.from_user.full_name}!\n Bizning xizmatlarimizga xush kelibsiz, bizda ta'mirlash va ko'chmas mulk xizmatlari mavjud", reply_markup = menu)
     # Adminga xabar beramiz
-    count = await db.count_users()
-    msg = f"{user[1]} bazaga qo'shildi.\nBazada {count} ta foydalanuvchi bor."
-    await bot.send_message(chat_id=CHANNELS[0], text=msg)
+    # count = await db.count_users()
+    # msg = f"{user[1]} bazaga qo'shildi.\nBazada {count} ta foydalanuvchi bor."
+    # await bot.send_message(chat_id=CHANNELS[0], text=msg)
 
 
 
 @dp.message_handler(text = "🇺🇿 O'zbekcha")
 async def show_menu(message: Message):
     await message.answer("Asosiy menyu", reply_markup = menu_uz)
-
+    #info =  await db.get_categories(menu_language="UZB", category_name="Avto servis", service_name="Polirovka")
+    #message.reply_photo(info) #caption=Description
+    #await message.answer_photo(info)
 
 @dp.message_handler(text = "📞 Biz bilan bog'lanish")
 async def show_menu(message: Message, state: FSMContext):
