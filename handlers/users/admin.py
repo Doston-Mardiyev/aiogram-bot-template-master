@@ -4,6 +4,7 @@ from os import mkdir
 from aiogram.types.message import ContentType, ContentTypes
 from aiogram.types.video import Video
 from states.category import SaveData
+from states.reklama import Ad_Post
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message, CallbackQuery
@@ -20,52 +21,18 @@ from pathlib import Path
 
 @dp.message_handler(text="/user", user_id=ADMINS)
 async def get_all_users(message: types.Message):
-    users = await db.select_all_users()
+    users = await db.count_users()
     #print(users[0][0])
-    await message.answer(users)
+    await message.answer(f"Foydalanuvchilar soni: {users}")
 
-#==========================reklama===========================
-# @dp.message_handler(text="/reklama", user_id=ADMINS, state=None)
-# async def send_ad_to_all(message: types.Message):
-#     await message.answer("Rasm yuboring:")
-#     await SaveData.Photo.set() 
-    
- 
-# @dp.message_handler(state=SaveData.Photo, content_types=types.ContentType.ANY)
-# async def get_photo(message: Message, state: FSMContext):
-#     Reklama_rasm = message.photo[-1].file_id
-#     await state.update_data(Reklama_rasm=Reklama_rasm)
-#     await message.answer("Izox yuboring:")
-#     await SaveData.next()
-
-# @dp.message_handler(state=SaveData.Description)
-# async def create_post(message: Message, state: FSMContext):
-#     Izox = message.text
-#     await state.update_data(Izox=Izox)
-#     await message.answer("Ma'lumotlar bazaga saqlandi")
-#     async with state.proxy() as data: 
-#         Reklama_rasm = data.get("Reklama_rasm")
-#         Izox = data.get("Izox")
-#         await db.add_product(photo=Reklama_rasm, description=Izox)
-
-#     ad = await db.get_categories()
-#     users = await db.select_all_users()
-#     for adv in ad:
-#         ad_photo = adv[2]
-#         ad_description = adv[1]
-#         for user in users:
-#             user_id = user[5]
-#             advertise = await message.answer_photo(ad_photo, caption=ad_description)
-#             await bot.send_message(chat_id=user_id, text=advertise)
-#             await asyncio.sleep(0.05)
-    
-#===================================================================
+#=======================================================
 
 @dp.message_handler(text="/clean", user_id=ADMINS)
 async def get_all_users(message: types.Message):
     await db.drop_products()
     await message.answer("Baza tozalandi!")
 
+#======================================================
 
 @dp.message_handler(text="/admin", user_id=ADMINS, state=None)
 async def get_all_users(message: types.Message):
@@ -157,15 +124,56 @@ async def create_post(message: Message, state: FSMContext):
         except:
             await message.answer_photo(Photo, caption=Description, reply_markup = menu_uz)
 
-        
-
     await state.finish()
 
 
 
-#  @dp.message_handler(state=SaveData.Catigory)
-#         async def create_post(message: Message, state: FSMContext):
-#             Catigory = message.text
-#             await state.update_data(Catigory=Catigory)
-#             await message.answer("Service yozing:", reply_markup =  uy_admin_uz)
-#             await SaveData.next()
+#==========================reklama===========================
+@dp.message_handler(text="/reklama", user_id=ADMINS, state=None)
+async def send_ad_to_all(message: types.Message):
+    await message.answer("Rasm yuboring:")
+    await Ad_Post.Photo_ad.set() 
+    
+ 
+@dp.message_handler(state=Ad_Post.Photo_ad, content_types=types.ContentType.ANY)
+async def get_photo(message: Message, state: FSMContext):
+    try:
+    # Photo = message.video.download
+        Reklama_rasm = message.photo[-1].file_id
+    #await message.reply(message.video.file_id)
+        await state.update_data(Reklama_rasm=Reklama_rasm)
+        await message.answer("Izox yuboring:")
+        await Ad_Post.next()
+    except: 
+         Reklama_rasm = message.video.file_id
+         await state.update_data(Reklama_rasm=Reklama_rasm)
+         await message.answer("Izox yuboring:")
+         await Ad_Post.next()
+
+
+@dp.message_handler(state=Ad_Post.Description_ad)
+async def create_post(message: Message, state: FSMContext):
+    ad_description = message.text
+    await state.update_data(ad_description=ad_description)
+    await message.answer("Reklama qabul qilindi", reply_markup = menu_uz)
+    async with state.proxy() as data: 
+        Reklama_rasm = data.get("Reklama_rasm")
+        ad_description = data.get("ad_description")
+        #await db.add_product(photo=Reklama_rasm, description=Izox)
+    await state.finish()
+    #ad = await db.get_categories()
+    users = await db.select_all_users()
+    # for adv in ad:
+    #     ad_photo = adv[2]
+    #     ad_description = adv[1]
+    for user in users:
+            user_id = user[0]
+            try:
+               advertise = await message.answer_photo(Reklama_rasm, caption=ad_description)
+            except:
+               advertise = await message.answer_video(Reklama_rasm, caption=ad_description)
+        
+            await bot.send_message(chat_id=user_id, text=advertise)
+            await asyncio.sleep(0.05)
+    
+#===================================================================

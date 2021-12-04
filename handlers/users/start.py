@@ -61,12 +61,13 @@ async def show_menu(message: Message):
 
 
 @dp.message_handler(text = "📞 Связать")
-async def show_menu(message: Message):
+async def show_menu(message: Message, state: FSMContext):
     await message.answer("Пожалуйста, отправьте контакт ...", reply_markup = contact_ru)
+    await NewPost.PhoneNumber_ru.set ()
 
-@dp.message_handler(text = "Вернитесь назад")
-async def show_menu(message: Message):
+@dp.message_handler(text = "Вернитесь назад", state=NewPost.PhoneNumber_ru)
+async def show_menu(message: Message, state: FSMContext):
     await message.answer("Главное меню", reply_markup = menu_ru)  #replay_markup=ReplayKeyboardRemove()
-
+    await state.finish()
 
 

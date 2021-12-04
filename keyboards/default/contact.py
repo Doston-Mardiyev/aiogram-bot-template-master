@@ -2,8 +2,6 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from states.channel import NewPost 
 
 
-
-
 contact = ReplyKeyboardMarkup(
     keyboard=[
         [
