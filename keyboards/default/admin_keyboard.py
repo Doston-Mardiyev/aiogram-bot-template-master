@@ -138,17 +138,17 @@ uy_admin_ru = ReplyKeyboardMarkup(
         ],
         [
            KeyboardButton(text = "Быстрый выкуп недвижимости"),
-           KeyboardButton(text = "Доверительное управление"),
+           KeyboardButton(text = "Доверительное Управление!"),
             
         ],
          [
-           KeyboardButton(text = "Организатор торгов"),
-           KeyboardButton(text = "Meros olish hujjatlari"),
+           KeyboardButton(text = "Организатор торгов!"),
+           KeyboardButton(text = "Подготовка документов для получения наследство!"),
             
         ],
 
         [
-           KeyboardButton(text = "Turar joydan noturar joygacha yoki aksincha xujjatlarni tayyorlash"),
+           KeyboardButton(text = "Подготовка документов с жилого на нежилое или наоборот!"),
             
         ],
     ],

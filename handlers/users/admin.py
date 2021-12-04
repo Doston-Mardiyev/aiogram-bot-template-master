@@ -1,6 +1,4 @@
 import asyncio
-from os import mkdir
-
 from aiogram.types.message import ContentType, ContentTypes
 from aiogram.types.video import Video
 from states.category import SaveData
@@ -14,10 +12,6 @@ from keyboards.default.admin_keyboard import menu_admin_ru, menu_admin_uz, avto_
 
 from data.config import CHANNELS, ADMINS
 from loader import dp, db, bot
-from pathlib import Path
-
-# download_path = Path().joinpath("download")
-# download_path.mkdir(parents = True, exist_ok=True)
 
 @dp.message_handler(text="/user", user_id=ADMINS)
 async def get_all_users(message: types.Message):
@@ -79,8 +73,6 @@ async def choosing_language(message: Message, state: FSMContext):
                         await state.update_data(Catigory=Catigory)
                         await message.answer("Servisni tanlang:", reply_markup = avto_admin_ru)
                         await SaveData.next()
-
-
 
 
 @dp.message_handler(state=SaveData.Service)

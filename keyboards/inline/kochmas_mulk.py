@@ -45,17 +45,17 @@ uy_menu_ru = InlineKeyboardMarkup(
         ],
         [
            InlineKeyboardButton(text = "Быстрый выкуп недвижимости", callback_data='Быстрый'),
-           InlineKeyboardButton(text = "Доверительное управление", callback_data='Доверительное'),
+           InlineKeyboardButton(text = "Доверительное Управление", callback_data='Доверительное'),
             
         ],
          [
            InlineKeyboardButton(text = "Организатор торгов", callback_data='Организатор'),
-           InlineKeyboardButton(text = "Meros olish hujjatlari", callback_data='Meros'),
+           InlineKeyboardButton(text = "Подготовка документов для получения наследство", callback_data='Meros'),
             
         ],
 
         [
-           InlineKeyboardButton(text = "Turar joydan noturar joygacha yoki aksincha xujjatlarni tayyorlash", callback_data='tayyorlash'),
+           InlineKeyboardButton(text = "Подготовка документов с жилого на нежилое или наоборот", callback_data='tayyorlash'),
             
         ],
     ],

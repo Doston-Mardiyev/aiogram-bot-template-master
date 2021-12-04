@@ -27,7 +27,7 @@ menu_ru = ReplyKeyboardMarkup(
             
         ],
         [
-           KeyboardButton(text = "ℹ️  О нас"),
+           KeyboardButton(text = "ℹ️ О нас"),
            KeyboardButton(text = "📞 Контакт"),
             
         ],
