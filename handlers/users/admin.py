@@ -28,6 +28,15 @@ async def get_all_users(message: types.Message):
 
 #======================================================
 
+#=======================================================
+
+@dp.message_handler(text="/clean2", user_id=ADMINS)
+async def get_all_users(message: types.Message):
+    await db.drop_users()
+    await message.answer("Baza tozalandi!")
+
+#======================================================
+
 @dp.message_handler(text="/admin", user_id=ADMINS, state=None)
 async def get_all_users(message: types.Message):
     await message.answer("Tilni tanlang:", reply_markup = language)
@@ -159,13 +168,37 @@ async def create_post(message: Message, state: FSMContext):
     #     ad_photo = adv[2]
     #     ad_description = adv[1]
     for user in users:
-            user_id = user[0]
+            user_id = user[5]
             try:
-               advertise = await message.answer_photo(Reklama_rasm, caption=ad_description)
+               #advertise = await message.answer_photo(Reklama_rasm, caption=ad_description)
+               await bot.send_photo(chat_id=user_id, photo = Reklama_rasm, caption=ad_description)
+            #    await bot.send_photo(CHANNELS[0], photo = Reklama_rasm, caption=ad_description)
+
+               await asyncio.sleep(0.05)
             except:
-               advertise = await message.answer_video(Reklama_rasm, caption=ad_description)
-        
-            await bot.send_message(chat_id=user_id, text=advertise)
-            await asyncio.sleep(0.05)
+            #    advertise = await message.answer_video(Reklama_rasm, caption=ad_description)
+               await bot.send_video(chat_id=user_id, video = Reklama_rasm, caption=ad_description)
+               await asyncio.sleep(0.05)
+
+
+
+
+
+# =============================================================
+# @dp.message_handler(text="/reklama", user_id=ADMINS)
+# async def send_message(message: types.Message):
+#     users = await db.select_all_users()
+# #     # for adv in ad:
+# #     #     ad_photo = adv[2]
+# #     #     ad_description = adv[1]
+#     for user in users:
+#            user_id = user[5]
+#            await bot.send_message(chat_id = user_id, text="Reklama")
+
+# @dp.message_handler(text="/allusers", user_id=ADMINS)
+# async def get_all_users(message: types.Message):
+#     users = await db.select_all_users()
+#     user_id = users[5]
+#     await message.answer(user_id)
     
 #===================================================================
